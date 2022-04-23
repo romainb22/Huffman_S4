@@ -12,6 +12,11 @@ void usage(char * str){
   return;
 }
 
+void test(){
+  priintf("Just to test smth\n");
+  return;
+}
+
 void readNCharFromFile(FILE *myfile, int n){
   int count;
   char todisplay[n];
