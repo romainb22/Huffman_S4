@@ -12,11 +12,6 @@ void usage(char * str){
   return;
 }
 
-void test(){
-  priintf("Just to test smth\n");
-  return;
-}
-
 void readNCharFromFile(FILE *myfile, int n){
   int count;
   char todisplay[n];
@@ -50,8 +45,32 @@ void readEntireFile(FILE *myfile){
   return;
 }
 
+void occurence(FILE *myfile, int tab[256]){
+  char c;
+  int i;
+  if(!myfile){
+    printf("Erreur fichier non valide.\n");
+    return;
+  }
+  c = fgetc(myfile);
+  while(c!=EOF){
+    tab[(int)c]++;
+    c = fgetc(myfile);
+  }
+  for(i=0;i<256;i++){
+    if(tab[i]){
+      printf("tab[%c] = %d\n",i,tab[i]);
+    }
+  }
+  return;
+}
+
 int main(int argc, char ** argv){
   FILE * myfile;
+  int i,tab[256];
+  for(i=0;i<256;i++){
+    tab[i]=0;
+  }
   if(argc != 3){
     usage(argv[0]);
     exit(EXIT_FAILURE);
@@ -63,6 +82,9 @@ int main(int argc, char ** argv){
     printf("\n\n");
     myfile = fopen(argv[1],"r");
     readEntireFile(myfile);
+    fclose(myfile);
+    myfile = fopen(argv[1], "r");
+    occurence(myfile, tab);
     fclose(myfile);
   }
   return 0;
