@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include"noeud.h"
+#include"tableau.h"
 
 void usage(char * str){
   printf("Usage : %s [fichier] [entier]\n", str);
@@ -104,6 +105,13 @@ int main(int argc, char ** argv){
   }
   for(i=0;i<j;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
+  }
+  rechercherDeuxMin(huffman,j);
+  for(i=0;i<j;i++){
+    printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
+  }
+  for(i=0;i<2;i++){
+    printf("L'occurence la plus petite n°%d : %d (%c)\n",i,huffman[i]->occurence,huffman[i]->caractere);
   }
   return 0;
 }
