@@ -12,4 +12,6 @@ typedef struct noeud{
 
 typedef noeud * arbre;
 
+
+
 #endif

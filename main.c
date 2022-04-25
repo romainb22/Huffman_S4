@@ -94,8 +94,15 @@ int main(int argc, char ** argv){
       if(!(huffman[j] = malloc(sizeof(noeud)))){
         printf("Erreur d'allocation !\n");
       }
+      else{
+        huffman[j]->caractere = (char) i;
+        huffman[j]->occurence = tab[i];
+      }
       j++;
     }
+  }
+  for(i=0;i<j;i++){
+    printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
   }
   return 0;
 }
