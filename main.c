@@ -3,7 +3,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
-
+#include"noeud.h"
 
 void usage(char * str){
   printf("Usage : %s [fichier] [entier]\n", str);
@@ -67,9 +67,11 @@ void occurence(FILE *myfile, int tab[256]){
 
 int main(int argc, char ** argv){
   FILE * myfile;
-  int i,tab[256];
+  int i,tab[256],j;
+  arbre huffman[256];
   for(i=0;i<256;i++){
     tab[i]=0;
+    huffman[i]=NULL;
   }
   if(argc != 3){
     usage(argv[0]);
@@ -86,6 +88,14 @@ int main(int argc, char ** argv){
     myfile = fopen(argv[1], "r");
     occurence(myfile, tab);
     fclose(myfile);
+  }
+  for(i=0,j=0;i<256;i++){
+    if(tab[i]){
+      if(!(huffman[j] = malloc(sizeof(noeud)))){
+        printf("Erreur d'allocation !\n");
+      }
+      j++;
+    }
   }
   return 0;
 }

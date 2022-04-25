@@ -1,7 +1,7 @@
 CFLAGS = -W -Wall -pedantic -O3
 
-q4_1 :
-	gcc $(CFLAGS) question4_1.c -o main
+main :
+	gcc $(CFLAGS) main.c noeud.h -o main
 
 clean :
 	rm -rf */*.o main
