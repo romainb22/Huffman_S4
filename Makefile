@@ -1,8 +1,11 @@
 CFLAGS = -W -Wall -pedantic -O3
 
-main :
-	gcc $(CFLAGS) main.c noeud.h -o main
+main : noeud.o
+	gcc $(CFLAGS) main.c noeud.o -o main
+
+noeud.o :
+	gcc $(CFLAGS) -c noeud.c -o noeud.o
 
 clean :
-	rm -rf */*.o main
+	rm -rf */*.o *.o main
 

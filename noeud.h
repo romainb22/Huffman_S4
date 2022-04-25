@@ -12,6 +12,6 @@ typedef struct noeud{
 
 typedef noeud * arbre;
 
-
+arbre creer_feuille(int * tab, int index);
 
 #endif

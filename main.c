@@ -91,13 +91,14 @@ int main(int argc, char ** argv){
   }
   for(i=0,j=0;i<256;i++){
     if(tab[i]){
-      if(!(huffman[j] = malloc(sizeof(noeud)))){
+      huffman[j] = creer_feuille(tab, i);
+      /*if(!(huffman[j] = malloc(sizeof(noeud)))){
         printf("Erreur d'allocation !\n");
       }
       else{
         huffman[j]->caractere = (char) i;
         huffman[j]->occurence = tab[i];
-      }
+      }*/
       j++;
     }
   }
