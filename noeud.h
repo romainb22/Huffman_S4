@@ -14,4 +14,14 @@ typedef noeud * arbre;
 
 arbre creer_feuille(int * tab, int index);
 
+void creer_noeud(arbre tab[], int taille);
+
+int est_feuille(arbre a);
+
+int concat(int x, int y);
+
+void affichage_code(int nbr_bits, int codage);
+
+void creer_code(arbre element, int code, int profondeur);
+
 #endif

@@ -109,14 +109,23 @@ int main(int argc, char ** argv){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
   }
   printf("\n\n");
-  rechercherDeuxMin(huffman,j);
+  trierTableauArbre(huffman,j);
   for(i=0;i<j;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
   }
   printf("\n\n");
   for(i=0;i<2;i++){
-    printf("L'occurence la plus petite n°%d : %d (%c)\n",i,huffman[i]->occurence,huffman[i]->caractere);
+    printf("L'occurence la plus petite n°%d : %d (%c)\n",i+1,huffman[i]->occurence,huffman[i]->caractere);
   }
+  /*n->occurence = huffman[0]->occurence + huffman[1]->occurence;
+  n->caractere = '\0';
+  printf("Occurence du nouveau noeud : %d\n", n->occurence);*/
+  creer_noeud(huffman,j);
+  printf("\n\n");
+  for(i=0;i<j+j-1;i++){
+    printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
+  }
+  creer_code(huffman[i],0,0);
   return 0;
 }
 

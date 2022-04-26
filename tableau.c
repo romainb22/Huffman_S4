@@ -8,7 +8,7 @@
 #include"tableau.h"
 #include"noeud.h"
 
-void rechercherDeuxMin(arbre huffman[256], int taille){
+void trierTableauArbre(arbre huffman[256], int taille){
   int i, j;
   arbre ntmp;
   for(i=0;!huffman[i]->occurence;i++){
