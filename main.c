@@ -55,12 +55,14 @@ void occurence(FILE *myfile, int tab[256]){
   }
   c = fgetc(myfile);
   while(c!=EOF){
-    tab[(int)c]++;
+    if(c!='\n'){
+      tab[(int)c]++;
+    }
     c = fgetc(myfile);
   }
   for(i=0;i<256;i++){
     if(tab[i]){
-      printf("tab[%c] = %d\n",i,tab[i]);
+      printf("tab[%c] = %d\n",(char) i,tab[i]);
     }
   }
   return;
@@ -106,10 +108,12 @@ int main(int argc, char ** argv){
   for(i=0;i<j;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
   }
+  printf("\n\n");
   rechercherDeuxMin(huffman,j);
   for(i=0;i<j;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
   }
+  printf("\n\n");
   for(i=0;i<2;i++){
     printf("L'occurence la plus petite n°%d : %d (%c)\n",i,huffman[i]->occurence,huffman[i]->caractere);
   }
