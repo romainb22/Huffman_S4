@@ -3,6 +3,7 @@
 
 #include<stdio.h>
 #include<stdlib.h>
+#include <MLV/MLV_all.h>
 #include"noeud.h"
 #include"tableau.h"
 
@@ -67,14 +68,36 @@ void occurence(FILE *myfile, int tab[256]){
   }
   return;
 }
+/*
+void afficher_arbre_mlv(arbre a,int x,int y,int prof){
+    int ecart=0;
+    sleep(1);
+    if(!estVide(a)){
+      MLV_draw_text(x,y,"%c",MLV_COLOR_WHITE,a->caractere);
+      MLV_draw_text(x+10,y,"%d",MLV_COLOR_RED,a->occurence);
+      if(est_feuille(a)){
+        MLV_draw_text(x+30,y,"%d",MLV_COLOR_BLUE,a->code);
+      }
+      MLV_actualise_window();
+      afficher_arbre_mlv(a->fils_gauche,x-100/prof,y+40,prof+1);
+      afficher_arbre_mlv(a->fils_droit,x+100/prof,y+40,prof+1);
+      ecart-=20;
+    }
+}*/
+
 
 int main(int argc, char ** argv){
   FILE * myfile;
   int i,tab[256],j;
-  arbre huffman[256];
+  arbre huffman[256], alphabet[256];
+  FILE * fich;
+  char c;
+
+  /*MLV_create_window("Menu","Menu", 800, 800);*/
   for(i=0;i<256;i++){
     tab[i]=0;
-    huffman[i]=NULL;
+    huffman[i]=creerArbreVide();
+    alphabet[i]=creerArbreVide();
   }
   if(argc != 3){
     usage(argv[0]);
@@ -125,7 +148,28 @@ int main(int argc, char ** argv){
   for(i=0;i<j+j-1;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
   }
+  i--;
   creer_code(huffman[i],0,0);
+  /*afficher_arbre_mlv(huffman[i],400,10,1);
+  MLV_actualise_window();
+  sleep(300);*/
+
+
+  /*for(j=0;j<=i;j++){
+    if(huffman[j]->caractere){
+      alphabet[(int)huffman[j]->caractere]=huffman[j];
+    }
+  }*/
+
+  fich = fopen("banane.comp","r");
+
+  /* Faire une fonction pour lire l'entete */
+
+  for(i=0;i<256;i++){
+    if(alphabet[i]){
+      printf("%c au noeud %d\n",alphabet[i]->caractere,alphabet[i]);
+    }
+  }
   return 0;
 }
 

@@ -1,7 +1,10 @@
-CFLAGS = -W -Wall -pedantic -O3
+CFLAGS = -W -Wall -pedantic -O3 `pkg-config --cflags MLV`
+LDFLAGS = `pkg-config --libs-only-other --libs-only-L MLV`
+LDLIBS = `pkg-config --libs-only-l MLV`
 
-main : noeud.o tableau.o
-	gcc $(CFLAGS) main.c noeud.o tableau.o -o main
+
+main : clean noeud.o tableau.o
+	gcc $(CFLAGS) $(LDFLAGS) main.c noeud.o tableau.o $(LDLIBS) -o main
 
 noeud.o :
 	gcc $(CFLAGS) -c noeud.c -o noeud.o

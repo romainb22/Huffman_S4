@@ -12,6 +12,10 @@ typedef struct noeud{
 
 typedef noeud * arbre;
 
+int estVide(arbre a);
+
+arbre creerArbreVide();
+
 arbre creer_feuille(int * tab, int index);
 
 void creer_noeud(arbre tab[], int taille);
