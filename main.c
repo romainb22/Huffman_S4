@@ -6,11 +6,12 @@
 #include <MLV/MLV_all.h>
 #include"noeud.h"
 #include"tableau.h"
+#include"compression.h"
 
 void usage(char * str){
   printf("Usage : %s [fichier] [entier]\n", str);
-  printf("fichier : chemin vers un fichier texte\n");
-  printf("entier : le nombre de caractère à lire dans ledit fichier\n\n");
+  printf("fichier : chemin vers le fichier texte à compresser\n");
+  /*printf("entier : le nombre de caractère à lire dans ledit fichier\n\n");*/
   return;
 }
 
@@ -90,8 +91,8 @@ int main(int argc, char ** argv){
   FILE * myfile;
   int i,tab[256],j;
   arbre huffman[256], alphabet[256];
-  FILE * fich;
-  char c;
+  char * filename;
+  /*char c;*/
 
   /*MLV_create_window("Menu","Menu", 800, 800);*/
   for(i=0;i<256;i++){
@@ -99,11 +100,11 @@ int main(int argc, char ** argv){
     huffman[i]=creerArbreVide();
     alphabet[i]=creerArbreVide();
   }
-  if(argc != 3){
+  if(argc != 2){
     usage(argv[0]);
     exit(EXIT_FAILURE);
   }
-  else{
+  /*else{
     myfile = fopen(argv[1],"r");
     readNCharFromFile(myfile,atoi(argv[2]));
     fclose(myfile);
@@ -111,10 +112,10 @@ int main(int argc, char ** argv){
     myfile = fopen(argv[1],"r");
     readEntireFile(myfile);
     fclose(myfile);
-    myfile = fopen(argv[1], "r");
-    occurence(myfile, tab);
-    fclose(myfile);
-  }
+  }*/
+  myfile = fopen(argv[1], "r");
+  occurence(myfile, tab);
+  fclose(myfile);
   for(i=0,j=0;i<256;i++){
     if(tab[i]){
       huffman[j] = creer_feuille(tab, i);
@@ -128,26 +129,26 @@ int main(int argc, char ** argv){
       j++;
     }
   }
-  for(i=0;i<j;i++){
+  /*for(i=0;i<j;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
   }
-  printf("\n\n");
+  printf("\n\n");*/
   trierTableauArbre(huffman,j);
   for(i=0;i<j;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
   }
   printf("\n\n");
-  for(i=0;i<2;i++){
+  /*for(i=0;i<2;i++){
     printf("L'occurence la plus petite n°%d : %d (%c)\n",i+1,huffman[i]->occurence,huffman[i]->caractere);
-  }
+  }*/
   /*n->occurence = huffman[0]->occurence + huffman[1]->occurence;
   n->caractere = '\0';
   printf("Occurence du nouveau noeud : %d\n", n->occurence);*/
   creer_noeud(huffman,j);
-  printf("\n\n");
+  /*printf("\n\n");
   for(i=0;i<j+j-1;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
-  }
+  }*/
   i--;
   creer_code(huffman[i],0,0);
   /*afficher_arbre_mlv(huffman[i],400,10,1);
@@ -155,21 +156,31 @@ int main(int argc, char ** argv){
   sleep(300);*/
 
 
-  /*for(j=0;j<=i;j++){
+  for(j=0;j<=i;j++){
     if(huffman[j]->caractere){
       alphabet[(int)huffman[j]->caractere]=huffman[j];
     }
-  }*/
-
-  fich = fopen("banane.comp","r");
-
-  /* Faire une fonction pour lire l'entete */
+  }
 
   for(i=0;i<256;i++){
     if(alphabet[i]){
       printf("%c au noeud %d\n",alphabet[i]->caractere,alphabet[i]);
     }
   }
+
+
+  filename = strtok(argv[1],"/");
+  filename = strtok(NULL,"/");
+  filename = strtok(NULL,"/");
+  filename = strtok(NULL,"/");
+  filename = strtok(NULL,"/");
+  filename = strtok(filename,".");
+  printf("%s\n",filename);
+
+  myfile = fopen("banane.comp","w");
+
+  ecrireEntete(myfile,"banane.comp",alphabet);
+  fclose(myfile);
   return 0;
 }
 
