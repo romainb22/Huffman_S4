@@ -5,4 +5,6 @@
 
 void ecrireEntete(FILE * fich, char *nomfich, arbre alphabet[256]);
 
+void ecrireFichier(FILE *fichdest, FILE *fichsrc, arbre alphabet[256]);
+
 #endif

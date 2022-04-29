@@ -16,5 +16,5 @@ compression.o :
 	gcc $(CFLAGS) -c compression.c -o compression.o
 
 clean :
-	rm -rf */*.o *.o main
+	rm -rf *.o *.comp main
 

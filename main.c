@@ -88,10 +88,12 @@ void afficher_arbre_mlv(arbre a,int x,int y,int prof){
 
 
 int main(int argc, char ** argv){
-  FILE * myfile;
+  FILE * myfile, *filesrc;
   int i,tab[256],j;
   arbre huffman[256], alphabet[256];
-  char * filename;
+  char * filename, *prevfilename, *extension, *fichorigin;
+
+  fichorigin=strdup(argv[1]);
   /*char c;*/
 
   /*MLV_create_window("Menu","Menu", 800, 800);*/
@@ -113,9 +115,9 @@ int main(int argc, char ** argv){
     readEntireFile(myfile);
     fclose(myfile);
   }*/
-  myfile = fopen(argv[1], "r");
-  occurence(myfile, tab);
-  fclose(myfile);
+  filesrc = fopen(argv[1], "r");
+  occurence(filesrc, tab);
+  fclose(filesrc);
   for(i=0,j=0;i<256;i++){
     if(tab[i]){
       huffman[j] = creer_feuille(tab, i);
@@ -129,14 +131,15 @@ int main(int argc, char ** argv){
       j++;
     }
   }
+  i=j;
   /*for(i=0;i<j;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
-  }
-  printf("\n\n");*/
+  }*/
+  /*printf("\n\n");*/
   trierTableauArbre(huffman,j);
-  for(i=0;i<j;i++){
+  /*for(i=0;i<j;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
-  }
+  }*/
   printf("\n\n");
   /*for(i=0;i<2;i++){
     printf("L'occurence la plus petite n°%d : %d (%c)\n",i+1,huffman[i]->occurence,huffman[i]->caractere);
@@ -148,8 +151,9 @@ int main(int argc, char ** argv){
   /*printf("\n\n");
   for(i=0;i<j+j-1;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
-  }*/
-  i--;
+  }
+  i--;*/
+  i=j+j-2;
   creer_code(huffman[i],0,0);
   /*afficher_arbre_mlv(huffman[i],400,10,1);
   MLV_actualise_window();
@@ -162,25 +166,33 @@ int main(int argc, char ** argv){
     }
   }
 
-  for(i=0;i<256;i++){
+  /*for(i=0;i<256;i++){
     if(alphabet[i]){
       printf("%c au noeud %d\n",alphabet[i]->caractere,alphabet[i]);
     }
+  }*/
+
+  filename = argv[1];
+  prevfilename = argv[1];
+  extension = "";
+  filename=strtok(filename,"/");
+  while(filename!=NULL){
+    strcpy(prevfilename,filename);
+    filename=strtok(NULL,"/");
   }
+  extension = strdup(prevfilename);
+  prevfilename = strtok(prevfilename,".");
+  printf("%s\n",extension);
+  filename = strcat(prevfilename,".comp");
+  myfile = fopen(filename,"w");
+
+  ecrireEntete(myfile,extension,alphabet);
+  filesrc = fopen(fichorigin, "r");
+  ecrireFichier(myfile,filesrc,alphabet);
 
 
-  filename = strtok(argv[1],"/");
-  filename = strtok(NULL,"/");
-  filename = strtok(NULL,"/");
-  filename = strtok(NULL,"/");
-  filename = strtok(NULL,"/");
-  filename = strtok(filename,".");
-  printf("%s\n",filename);
-
-  myfile = fopen("banane.comp","w");
-
-  ecrireEntete(myfile,"banane.comp",alphabet);
   fclose(myfile);
+  fclose(filesrc);
   return 0;
 }
 
