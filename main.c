@@ -7,6 +7,7 @@
 #include"noeud.h"
 #include"tableau.h"
 #include"compression.h"
+#include"decompression.h"
 
 void usage(char * str){
   printf("Usage : %s [fichier] [entier]\n", str);
@@ -90,10 +91,9 @@ void afficher_arbre_mlv(arbre a,int x,int y,int prof){
 int main(int argc, char ** argv){
   FILE * myfile, *filesrc;
   int i,tab[256],j;
-  arbre huffman[256], alphabet[256];
+  arbre huffman[256], alphabet[256], alphabet2[256];
   char * filename, *prevfilename, *extension, *fichorigin;
 
-  fichorigin=strdup(argv[1]);
   /*char c;*/
 
   /*MLV_create_window("Menu","Menu", 800, 800);*/
@@ -101,11 +101,13 @@ int main(int argc, char ** argv){
     tab[i]=0;
     huffman[i]=creerArbreVide();
     alphabet[i]=creerArbreVide();
+    alphabet2[i]=creerArbreVide();
   }
   if(argc != 2){
     usage(argv[0]);
     exit(EXIT_FAILURE);
   }
+  fichorigin=strdup(argv[1]);
   /*else{
     myfile = fopen(argv[1],"r");
     readNCharFromFile(myfile,atoi(argv[2]));
@@ -193,6 +195,31 @@ int main(int argc, char ** argv){
 
   fclose(myfile);
   fclose(filesrc);
+
+  myfile=fopen("a.comp","r");
+  char c,file[2500];
+  c=fgetc(myfile);
+  while(c!=EOF){
+    printf("%c",c);
+    c=fgetc(myfile);
+  }
+  getFileName(file,myfile);
+  printf("fichier: %s\n",file);
+  getArbre(myfile,alphabet2);
+
+  printf("Alphabet généré.\n");
+  for(i=0;i<256;i++){
+    if(alphabet[i]){
+      printf("%c\n",alphabet[i]->caractere);
+    }
+  }
+  printf("Alphabet lu.\n");
+  for(i=0;i<256;i++){
+    if(alphabet2[i]){
+      printf("%c\n",alphabet2[i]->caractere);
+    }
+  }
+  fclose(myfile);
   return 0;
 }
 

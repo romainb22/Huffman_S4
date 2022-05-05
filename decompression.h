@@ -3,7 +3,7 @@
 
 #include"noeud.h"
 
-char * getFileName(FILE * myfile);
+void getFileName(char file[2500], FILE * myfile);
 
 void getArbre(FILE * myfile, arbre alphabet[256]);
 

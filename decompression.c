@@ -6,18 +6,16 @@
 #include<string.h>
 #include"decompression.h"
 
-char * getFileName(FILE * myfile){
-  char *res=NULL;
+void getFileName(char file[2500], FILE * myfile){
   rewind(myfile);
-  if(fscanf(myfile, "%s\n",res)!=1){
-      printf("Erreur de leceture");
-      return NULL;
+  if(fscanf(myfile,"%[^\n]",file)!=1){
+    printf("Erreur de lecture dans le fichier compressé!\n");
   }
-  return res;
+  return;
 }
 
 void getArbre(FILE * myfile,  arbre alphabet[256]){
-  char c,old,*code="";
+  char c,old,code[5000]="";
   c = fgetc(myfile);
   old = c;
   while(c!=EOF){
@@ -27,23 +25,29 @@ void getArbre(FILE * myfile,  arbre alphabet[256]){
     }
     c=fgetc(myfile);
     if(c=='>'){
-      alphabet[(int)old]=creerArbreVide();
+      alphabet[(int)old]=malloc(sizeof(noeud));
       alphabet[(int)old]->caractere=old;
-      if(fscanf(myfile, "%c-|",code)!=1){
-        printf("Erreur de lecture\n");
-        return;
+      while(c!='-'){
+        c=fgetc(myfile);
+        if(c=='0' || c=='1'){
+          strncat(code,&c,1);
+        }
+      }
+      alphabet[(int)old]->taillecode = strlen(code);
+      alphabet[(int)old]->code=atoi(code);
+    }
+    if(c=='-'){
+      c=fgetc(myfile);
+      if(c=='|'){
+        c=fgetc(myfile);
+        if(c=='\n'){
+          return;
+        }
       }
       else{
-        alphabet[(int)old]->taillecode = strlen(code);
-        alphabet[(int)old]->code=atoi(code);
+        printf("Fichier corrompu, arrêt...\n");
+        exit(EXIT_FAILURE);
       }
-    }
-    else if(c=='-'){
-      c=fgetc(myfile);
-    }
-    else{
-      printf("Fichier corrompu, arrêt...");
-      exit(EXIT_FAILURE);
     }
   }
   return;
