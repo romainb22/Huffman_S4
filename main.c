@@ -10,9 +10,9 @@
 #include"decompression.h"
 
 void usage(char * str){
-  printf("Usage : %s [fichier] [entier]\n", str);
-  printf("fichier : chemin vers le fichier texte à compresser\n");
-  /*printf("entier : le nombre de caractère à lire dans ledit fichier\n\n");*/
+  printf("Usage : %s [option] [fichier]\n", str);
+  printf("option : -c compression -d decompression (exclusif)\n");
+  printf("fichier : chemin vers le fichier texte à compresser\n\n");
   return;
 }
 
@@ -88,15 +88,15 @@ void afficher_arbre_mlv(arbre a,int x,int y,int prof){
 }*/
 
 
-int main(int argc, char ** argv){
+/*int main(int argc, char ** argv){
   FILE * myfile, *filesrc;
   int i,tab[256],j;
   arbre huffman[256], alphabet[256], alphabet2[256];
   char * filename, *prevfilename, *extension, *fichorigin;
 
-  /*char c;*/
+  char c;
 
-  /*MLV_create_window("Menu","Menu", 800, 800);*/
+  MLV_create_window("Menu","Menu", 800, 800);
   for(i=0;i<256;i++){
     tab[i]=0;
     huffman[i]=creerArbreVide();
@@ -108,7 +108,7 @@ int main(int argc, char ** argv){
     exit(EXIT_FAILURE);
   }
   fichorigin=strdup(argv[1]);
-  /*else{
+  else{
     myfile = fopen(argv[1],"r");
     readNCharFromFile(myfile,atoi(argv[2]));
     fclose(myfile);
@@ -116,50 +116,50 @@ int main(int argc, char ** argv){
     myfile = fopen(argv[1],"r");
     readEntireFile(myfile);
     fclose(myfile);
-  }*/
+  }
   filesrc = fopen(argv[1], "r");
   occurence(filesrc, tab);
   fclose(filesrc);
   for(i=0,j=0;i<256;i++){
     if(tab[i]){
       huffman[j] = creer_feuille(tab, i);
-      /*if(!(huffman[j] = malloc(sizeof(noeud)))){
+      if(!(huffman[j] = malloc(sizeof(noeud)))){
         printf("Erreur d'allocation !\n");
       }
       else{
         huffman[j]->caractere = (char) i;
         huffman[j]->occurence = tab[i];
-      }*/
+      }
       j++;
     }
   }
   i=j;
-  /*for(i=0;i<j;i++){
+  for(i=0;i<j;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
-  }*/
-  /*printf("\n\n");*/
-  trierTableauArbre(huffman,j);
-  /*for(i=0;i<j;i++){
-    printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
-  }*/
+  }
   printf("\n\n");
-  /*for(i=0;i<2;i++){
+  trierTableauArbre(huffman,j);
+  for(i=0;i<j;i++){
+    printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
+  }
+  printf("\n\n");
+  for(i=0;i<2;i++){
     printf("L'occurence la plus petite n°%d : %d (%c)\n",i+1,huffman[i]->occurence,huffman[i]->caractere);
-  }*/
-  /*n->occurence = huffman[0]->occurence + huffman[1]->occurence;
+  }
+  n->occurence = huffman[0]->occurence + huffman[1]->occurence;
   n->caractere = '\0';
-  printf("Occurence du nouveau noeud : %d\n", n->occurence);*/
+  printf("Occurence du nouveau noeud : %d\n", n->occurence);
   creer_noeud(huffman,j);
-  /*printf("\n\n");
+  printf("\n\n");
   for(i=0;i<j+j-1;i++){
     printf("caractère %c, occurence %d\n",huffman[i]->caractere,huffman[i]->occurence);
   }
-  i--;*/
+  i--;
   i=j+j-2;
   creer_code(huffman[i],0,0);
-  /*afficher_arbre_mlv(huffman[i],400,10,1);
+  afficher_arbre_mlv(huffman[i],400,10,1);
   MLV_actualise_window();
-  sleep(300);*/
+  sleep(300);
 
 
   for(j=0;j<=i;j++){
@@ -168,11 +168,11 @@ int main(int argc, char ** argv){
     }
   }
 
-  /*for(i=0;i<256;i++){
+  for(i=0;i<256;i++){
     if(alphabet[i]){
       printf("%c au noeud %d\n",alphabet[i]->caractere,alphabet[i]);
     }
-  }*/
+  }
 
   filename = argv[1];
   prevfilename = argv[1];
@@ -221,6 +221,83 @@ int main(int argc, char ** argv){
   }
   fclose(myfile);
   return 0;
+}*/
+
+int main(int argc, char ** argv){
+
+  FILE * myfile, * filesrc;
+  int i,tab[256],j;
+  arbre huffman[256], alphabet[256];
+  char * filename, *prevfilename, *extension, *fichorigin;
+
+  for(i=0;i<256;i++){
+    tab[i]=0;
+    huffman[i]=creerArbreVide();
+    alphabet[i]=creerArbreVide();
+  }
+
+  if(argc != 3){
+    usage(argv[0]);
+    exit(EXIT_FAILURE);
+  }
+  else{
+    switch(argv[1][1]){
+      case 'c':
+        /* compression */
+        fichorigin=strdup(argv[2]);
+        myfile = fopen(argv[2], "r");
+        occurence(myfile, tab);
+        for(i=0,j=0;i<256;i++){
+          if(tab[i]){
+            huffman[j] = creer_feuille(tab, i);
+            j++;
+          }
+        }
+        i=j;
+        trierTableauArbre(huffman,j);
+        printf("\n\n");
+        creer_noeud(huffman,j);
+        i=j+j-2;
+        creer_code(huffman[i],0,0);
+        for(j=0;j<=i;j++){
+          if(huffman[j]->caractere){
+            alphabet[(int)huffman[j]->caractere]=huffman[j];
+          }
+        }
+        filename = argv[2];
+        prevfilename = argv[2];
+        extension = "";
+        filename=strtok(filename,"/");
+        while(filename!=NULL){
+          strcpy(prevfilename,filename);
+          filename=strtok(NULL,"/");
+        }
+        extension = strdup(prevfilename);
+        prevfilename = strtok(prevfilename,".");
+        filename = strcat(prevfilename,".comp");
+        myfile = fopen(filename,"w");
+
+        ecrireEntete(myfile,extension,alphabet);
+        filesrc = fopen(fichorigin, "r");
+        ecrireFichier(myfile,filesrc,alphabet);
+        fclose(myfile);
+        fclose(filesrc);
+        break;
+      case 'd':
+        /* decompression */
+        filesrc=fopen(argv[2],"r");
+        char c,file[2500];
+        getFileName(file,filesrc);
+        getArbre(filesrc,alphabet);
+        myfile = fopen(file, "w"); /*On écrase le fichier si il existe dans le répertoire*/
+        getFileContent(filesrc, myfile, alphabet);
+        fclose(myfile);
+        break;
+      default:
+        usage(argv[1]);
+        break;
+    }
+  }
 }
 
 #endif

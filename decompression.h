@@ -3,10 +3,12 @@
 
 #include"noeud.h"
 
+void itoa(int n, char s[]);
+
 void getFileName(char file[2500], FILE * myfile);
 
 void getArbre(FILE * myfile, arbre alphabet[256]);
 
-void getFileContent(FILE * myfile);
+void getFileContent(FILE * myfilesrc, FILE *myfiledst, arbre alphabet[256]);
 
 #endif
