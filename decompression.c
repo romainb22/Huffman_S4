@@ -111,10 +111,12 @@ void getFileContent(FILE * myfilesrc, FILE * myfiledst, arbre alphabet[256]){
         foundinter=0;
         for(j=0;!foundinter;j++){
           printf("yo9 c=%c\n!",c);
-          itoa(alphabet[j]->code,code); /*alphabet[j]->code -> segfault */
-          if(j==255 || code[i] == c){
-            foundinter++;
-            printf("yo10 c=%c\n!",c);
+          if(!estVide(alphabet[j])){
+            itoa(alphabet[j]->code,code); /*alphabet[j]->code -> segfault */
+            if(j==255 || code[i] == c){
+              foundinter++;
+              printf("yo10 c=%c\n!",c);
+            }
           }
         }
         printf("yo11 c=%c\n!",c);
