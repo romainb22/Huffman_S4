@@ -89,7 +89,7 @@ void affichage_code(int nbr_bits, int codage){
 void creer_code(arbre element, int code, int profondeur){
   if(!estVide(element)){
     if(est_feuille(element)){
-      element->taillecode+=profondeur;
+      element->taillecode=profondeur;
       element->code=code;
       printf("%c codé par: ",element->caractere);
       affichage_code(element->taillecode, element->code);

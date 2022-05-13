@@ -11,4 +11,6 @@ void getArbre(FILE * myfile, arbre alphabet[256]);
 
 void getFileContent(FILE * myfilesrc, FILE *myfiledst, arbre alphabet[256]);
 
+char* binaryToStr(int number);
+
 #endif

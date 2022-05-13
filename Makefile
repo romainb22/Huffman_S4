@@ -19,5 +19,5 @@ decompression.o :
 	gcc $(CFLAGS) -c decompression.c -o decompression.o
 
 clean :
-	rm -rf *.o *.comp main
+	rm -rf *.o main
 

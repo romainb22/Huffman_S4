@@ -58,9 +58,7 @@ void occurence(FILE *myfile, int tab[256]){
   }
   c = fgetc(myfile);
   while(c!=EOF){
-    if(c!='\n'){
-      tab[(int)c]++;
-    }
+    tab[(int)c]++;
     c = fgetc(myfile);
   }
   for(i=0;i<256;i++){
@@ -274,24 +272,27 @@ int main(int argc, char ** argv){
         }
         extension = strdup(prevfilename);
         prevfilename = strtok(prevfilename,".");
-        filename = strcat(prevfilename,".comp");
-        myfile = fopen(filename,"w");
+        filename = strcat(prevfilename,".bc");
+        myfile = fopen(filename,"wb+");
 
         ecrireEntete(myfile,extension,alphabet);
-        filesrc = fopen(fichorigin, "r");
+        filesrc = fopen(fichorigin, "rb");
         ecrireFichier(myfile,filesrc,alphabet);
         fclose(myfile);
         fclose(filesrc);
         break;
       case 'd':
         /* decompression */
-        filesrc=fopen(argv[2],"r");
+        filesrc=fopen(argv[2],"rb");
         char c,file[2500];
         getFileName(file,filesrc);
         getArbre(filesrc,alphabet);
-        myfile = fopen(file, "w"); /*On écrase le fichier si il existe dans le répertoire*/
+        myfile = fopen(file, "w+"); /*On écrase le fichier s'il existe dans le répertoire*/
+        printf("Ouverture de :%s\n",file);
         getFileContent(filesrc, myfile, alphabet);
         fclose(myfile);
+        fclose(filesrc);
+        printf("\n");
         break;
       default:
         usage(argv[1]);
