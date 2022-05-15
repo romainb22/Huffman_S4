@@ -24,7 +24,9 @@ int est_feuille(arbre a);
 
 int concat(int x, int y);
 
-void affichage_code(int nbr_bits, int codage);
+void affichage_code(int codage);
+
+void codeToBiStr(int code, char * str);
 
 void creer_code(arbre element, int code, int profondeur);
 

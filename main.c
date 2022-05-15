@@ -68,22 +68,25 @@ void occurence(FILE *myfile, int tab[256]){
   }
   return;
 }
-/*
+
 void afficher_arbre_mlv(arbre a,int x,int y,int prof){
+  char str[500];
     int ecart=0;
     sleep(1);
     if(!estVide(a)){
       MLV_draw_text(x,y,"%c",MLV_COLOR_WHITE,a->caractere);
       MLV_draw_text(x+10,y,"%d",MLV_COLOR_RED,a->occurence);
       if(est_feuille(a)){
-        MLV_draw_text(x+30,y,"%d",MLV_COLOR_BLUE,a->code);
+        codeToBiStr(a->code,str);
+        MLV_draw_text(x+20,y,"%s",MLV_COLOR_BLUE,str);
+        MLV_draw_text(x,y+20,"%d",MLV_COLOR_GREEN,a->taillecode);
       }
       MLV_actualise_window();
       afficher_arbre_mlv(a->fils_gauche,x-100/prof,y+40,prof+1);
       afficher_arbre_mlv(a->fils_droit,x+100/prof,y+40,prof+1);
       ecart-=20;
     }
-}*/
+}
 
 
 /*int main(int argc, char ** argv){
@@ -226,7 +229,7 @@ int main(int argc, char ** argv){
   FILE * myfile, * filesrc;
   int i,tab[256],j;
   arbre huffman[256], alphabet[256];
-  char * filename, *prevfilename, *extension, *fichorigin;
+  char * filename, *prevfilename, *extension, *fichorigin, str[5000];
 
   for(i=0;i<256;i++){
     tab[i]=0;
@@ -262,6 +265,17 @@ int main(int argc, char ** argv){
             alphabet[(int)huffman[j]->caractere]=huffman[j];
           }
         }
+        for(j=0;j<256;j++){
+          if(alphabet[j]){
+            strcpy(str,"");
+            codeToBiStr(alphabet[j]->code,str);
+            printf("%c -> %s (%d)\n",j,str,alphabet[j]->taillecode);
+          }
+        }
+        /*MLV_create_window("Menu","Menu", 800, 800);
+        afficher_arbre_mlv(huffman[i],400,10,1);
+        MLV_actualise_window();
+        sleep(300);*/
         filename = argv[2];
         prevfilename = argv[2];
         extension = "";
@@ -284,7 +298,7 @@ int main(int argc, char ** argv){
       case 'd':
         /* decompression */
         filesrc=fopen(argv[2],"rb");
-        char c,file[2500];
+        char file[2500];
         getFileName(file,filesrc);
         getArbre(filesrc,alphabet);
         myfile = fopen(file, "w+"); /*On écrase le fichier s'il existe dans le répertoire*/

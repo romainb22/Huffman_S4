@@ -3,6 +3,7 @@
 
 #include<stdlib.h>
 #include<stdio.h>
+#include<string.h>
 #include"noeud.h"
 #include"tableau.h"
 
@@ -73,16 +74,27 @@ int concat(int x, int y){
   return x+tmp;
 }
 
-void affichage_code(int nbr_bits, int codage){
-  int tmp = codage, taille=1;
-  while(tmp>9){
-    tmp/=10;
-    taille++;
+void affichage_code(int codage){
+  int num=codage;
+  if (num >> 1) {
+      affichage_code(num >> 1);
   }
-  for(tmp=0;tmp<nbr_bits-taille-1;tmp++){
-    printf("0");
+  putc((num & 1) ? '1' : '0', stdout);
+  return;
+}
+
+void codeToBiStr(int codage, char* str){
+  int num=codage;
+  char zero='0', un='1';
+  if (num >> 1) {
+      codeToBiStr(num >> 1, str);
   }
-  printf("%d\n", codage);
+  if(num & 1){
+    strncat(str,&un,1);
+  }
+  else{
+    strncat(str,&zero,1);
+  }
   return;
 }
 
@@ -92,11 +104,13 @@ void creer_code(arbre element, int code, int profondeur){
       element->taillecode=profondeur;
       element->code=code;
       printf("%c codé par: ",element->caractere);
-      affichage_code(element->taillecode, element->code);
+      affichage_code(element->code);
+      printf("(%d)",element->taillecode);
+      printf("\n");
     }
     else{
-      creer_code(element->fils_gauche,concat(code,0),profondeur+1);
-      creer_code(element->fils_droit,concat(code,1),profondeur+1);
+      creer_code(element->fils_gauche,(code<<1),profondeur+1);
+      creer_code(element->fils_droit,(code<<1)+1,profondeur+1);
     }
   }
   return;
