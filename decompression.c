@@ -63,6 +63,12 @@ void getArbre(FILE * myfile,  arbre alphabet[256]){
   char c,old=0,*code,*taillecode,vide[]="";
   int i, first;
 
+  code = malloc(sizeof(char)*50000);
+  taillecode = malloc(sizeof(char)*50000);
+  if(!code || !taillecode){
+    printf("Erreur d'allocation.\n");
+    exit(EXIT_FAILURE);
+  }
   c=fgetc(myfile);
   while(c!=EOF){
     first=1;
@@ -81,9 +87,7 @@ void getArbre(FILE * myfile,  arbre alphabet[256]){
       case '>':
         /*On est potentiellement au début d'une nouvelle ligne*/
         i=0;
-        //strcpy(code,"");
         code = strdup(vide);
-        //strcpy(taillecode,"");
         taillecode = strdup(vide);
         if(first){
           c=fgetc(myfile);
@@ -99,12 +103,10 @@ void getArbre(FILE * myfile,  arbre alphabet[256]){
           i++;
         }
         code[i]='\0';
-        /* On a récupéré le code */
         alphabet[(int)old]=malloc(sizeof(noeud));
         if(!alphabet[(int)old]){
           printf("Erreur d'allocation\n");
         }
-        /*On va récupérer la taillecode */
         c=fgetc(myfile);
         while(c!='\n'){
           strncat(taillecode,&c,1);
@@ -157,11 +159,9 @@ void getFileContent(FILE * myfilesrc, FILE * myfiledst, arbre alphabet[256]){
     for (i=7;i>=0;--i){
       if(c & (1<<i)){
         fputc('1',tmp);
-        //printf("1");
       }
       else{
         fputc('0',tmp);
-        //printf("0");
       }
     }
     c = fgetc(myfilesrc);
@@ -173,39 +173,31 @@ void getFileContent(FILE * myfilesrc, FILE * myfiledst, arbre alphabet[256]){
   c=fgetc(tmp);
   ICI:
   while(c!=EOF){
-    //strcpy(code,""); /* On initialise le code que l'on va récupérer*/
+    /* On initialise le code que l'on va récupérer*/
     code=strdup(vide);
     strncat(code,&c,1); /* On ajoute le caractère */
     while((int)strlen(code)<taillecodemin){ /* On récupère les caractères suivant, jusqu'à arriver à la taille minimum */
       c = fgetc(tmp);
       strncat(code,&c,1);
     }
-    printf("code %s\n",code);
     LA:
     if(c==EOF){
       goto ICI;
     }
     for(i=0;i<256;i++){ /* On parcours l'alphabet pour comparer les codes (lourd) */
       PLUSHAUT:
-      /*printf("Oi %s, %d\n",code, (int)strlen(code));
-      usleep(10000);*/
       if(!estVide(alphabet[i])){
         if(alphabet[i]->taillecode!=(int)strlen(code)){
           i++;
           goto PLUSHAUT;
         }
-        //strcpy(codage2,""); /* On initialise le code de l'alphabet */
-        //strcpy(codage,"");
         codage2=strdup(vide);
         codage=strdup(vide);
         codeToBiStr(alphabet[i]->code,codage2);
-        //printf("Ahoy %d\n",alphabet[i]->taillecode-(int)strlen(codage));
         for(k=0;k<alphabet[i]->taillecode-(int)strlen(codage2);k++){
           strncat(codage,&zero,1);
         }
         strcat(codage,codage2);
-        /*printf("%s (%c) %s\n",codage,i,code);
-        sleep(1);*/
         if(!strcmp(codage,code)){ /* Si les deux codes coïncident */
           fputc(alphabet[i]->caractere,myfiledst); /* On écrit dans le fichier destination le caractère lu */
           found++;
@@ -225,6 +217,8 @@ void getFileContent(FILE * myfilesrc, FILE * myfiledst, arbre alphabet[256]){
     }
     goto LA;
   }
+  fclose(tmp);
+  remove("tmp");
   return;
 }
 

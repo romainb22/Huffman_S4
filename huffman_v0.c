@@ -1,5 +1,5 @@
-#ifndef _QUESTION4_1_C_
-#define _QUESTION4_1_C_
+#ifndef _HUFFMAN_V0_C_
+#define _HUFFMAN_V0_C_
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -69,7 +69,7 @@ void occurence(FILE *myfile, int tab[256]){
   return;
 }
 
-void afficher_arbre_mlv(arbre a,int x,int y,int prof){
+/*void afficher_arbre_mlv(arbre a,int x,int y,int prof){
   char str[500];
     int ecart=0;
     sleep(1);
@@ -86,7 +86,8 @@ void afficher_arbre_mlv(arbre a,int x,int y,int prof){
       afficher_arbre_mlv(a->fils_droit,x+100/prof,y+40,prof+1);
       ecart-=20;
     }
-}
+    return;
+}*/
 
 
 /*int main(int argc, char ** argv){
@@ -229,12 +230,23 @@ int main(int argc, char ** argv){
   FILE * myfile, * filesrc;
   int i,tab[256],j;
   arbre huffman[256], alphabet[256];
-  char * filename, *prevfilename, *extension, *fichorigin, str[5000];
+  char * filename, *prevfilename, *extension, *fichorigin, *str;
 
   for(i=0;i<256;i++){
     tab[i]=0;
     huffman[i]=creerArbreVide();
     alphabet[i]=creerArbreVide();
+  }
+
+
+  filename = malloc(sizeof(char)*50000);
+  prevfilename = malloc(sizeof(char)*50000);
+  extension = malloc(sizeof(char)*50000);
+  fichorigin = malloc(sizeof(char)*50000);
+  str=malloc(sizeof(char)*50000);
+  if(!filename || !prevfilename || !extension || !fichorigin || !str){
+    printf("Erreur d'allocation.\n");
+    exit(EXIT_FAILURE);
   }
 
   if(argc != 3){

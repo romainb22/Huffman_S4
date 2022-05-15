@@ -1,6 +1,4 @@
 # Huffman_S4
-C Project by Agim &amp; Bruno
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Projet de quatrième semestre en programmation impérative (C) par A.Jonuzaj et B.Romain.
+
+Pour compiler une version de logiciel, lancer la commande make vX où X est la version.
