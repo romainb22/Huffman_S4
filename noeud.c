@@ -64,22 +64,17 @@ int est_feuille(arbre a){
   }
 }
 
-int concat(int x, int y){
-  int tmp=y;
-  do{
-    x*=10;
-    y/=10;
-  }
-  while(y);
-  return x+tmp;
-}
-
 void affichage_code(int codage){
   int num=codage;
   if (num >> 1) {
       affichage_code(num >> 1);
   }
-  putc((num & 1) ? '1' : '0', stdout);
+  if((num & 1)){
+    printf("1");
+  }
+  else{
+    printf("0");
+  }
   return;
 }
 

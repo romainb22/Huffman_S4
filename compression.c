@@ -38,9 +38,7 @@ void ecrireEntete(FILE * fich, char *nomfich, arbre alphabet[256]){
 
 void ecrireFichier(FILE *fichdest, FILE *fichsrc, arbre alphabet[256]){
   char c, *code, *codage,*codagetmp, zero='0',vide[]="";
-  int towrite=0,taillecontenu=0,quotient, reste, i, j, taillecode;
-  c = fgetc(fichsrc);
-  taillecontenu++;
+  int towrite=0,i, j, taillecode;
   code = malloc(sizeof(char)*50000);
   codage = malloc(sizeof(char)*50000);
   codagetmp = malloc(sizeof(char)*50000);
@@ -48,18 +46,8 @@ void ecrireFichier(FILE *fichdest, FILE *fichsrc, arbre alphabet[256]){
     printf("Erreur d'allocation.\n");
     exit(EXIT_FAILURE);
   }
-  while(c!=EOF){
-    c = fgetc(fichsrc);
-    taillecontenu++;
-  }
-  quotient = taillecontenu/8;
-  reste = taillecontenu%8;
-  if(reste){
-    quotient++;
-  }
   rewind(fichsrc);
   c = fgetc(fichsrc);
-  taillecontenu=0;
   while(c!=EOF){
     code=strdup(vide);
     codage=strdup(vide);
@@ -90,7 +78,7 @@ void ecrireFichier(FILE *fichdest, FILE *fichsrc, arbre alphabet[256]){
           for(i=strlen(code);i<(int)sizeof(code);i++){
             code[i]=codage[i-taillecode];
           }
-          code[i]='\0'; /* Crée un warning, mais sans ça ne marche pas*/
+          code[i]='\0';
           /* On écrit le caractere correspondant à la chaine codage */
           writeStringAsBinary(fichdest,code);
           /* Aller à un autre endroit spécial et traiter le reste de la chaine */

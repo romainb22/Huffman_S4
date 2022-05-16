@@ -27,8 +27,11 @@ compression.o :
 decompression.o :
 	@gcc $(CFLAGS) -c decompression.c -o decompression.o
 
+ref :
+	@doxygen config
+
 clean :
-	@rm -rf *.o v*
+	@rm -rf *.o v* *~ html latex
 
 cleanb : 
 	@rm -rf *.bc

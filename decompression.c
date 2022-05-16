@@ -30,7 +30,7 @@ void itoa(int n, char s[]){
   return;
 }
 
-void getFileName(char file[2500], FILE * myfile){
+void getFileName(char * file, FILE * myfile){
   char c='0';
   int i=0;
   fseek(myfile, 0, SEEK_SET);
@@ -220,17 +220,6 @@ void getFileContent(FILE * myfilesrc, FILE * myfiledst, arbre alphabet[256]){
   fclose(tmp);
   remove("tmp");
   return;
-}
-
-char* binaryToStr(int number){
-  static char res[PAQUET+1];
-  int i;
-  for(i=0;i<PAQUET;i++){
-    res[i] = number & 0x8000 ? '1' : '0';
-    number<<=1;
-  }
-  res[PAQUET]='\0';
-  return res;
 }
 
 #endif
